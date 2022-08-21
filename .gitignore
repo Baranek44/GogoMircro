@@ -3,3 +3,4 @@ frontApp.exe
 brokerApp
 authApp
 go.sum
+loggerServiceApp
