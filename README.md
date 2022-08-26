@@ -4,8 +4,8 @@ Applcation with basic work with microservices like log, mail, authentication
 ## Table od Contents
 * [General Info](#general-info) 
 - [Technologies](#technologies)
-- [Setup](#Setup)
-- [Status](#Status application)
+- [Setup](#setup)
+- [Status](#status)
 
 ## General info
 
