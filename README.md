@@ -20,15 +20,8 @@ Applcation with basic work with microservices like log, mail, authentication
 
 ## Setup
 necessary app: Docker, np. Visual Studio Code, mongoDBCompas
-To run Project local, write this command
+TODO
 
-```
-$ git clone https://github.com/Baranek44/goApp
-$ cd ../stuff 
-$ make up_build && make start
-```
-Now Run broswer and write localhost/ or localhost/80
 
 ## Status
-This Project working on local server
-I'm working to add this app to clode
+Working on issue
