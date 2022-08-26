@@ -2,27 +2,46 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h1 class="mt-5">Test microservices</h1>
+            <h1 class="mt-5">Main Web</h1>
             <hr>
-            <a id="brokerServiceBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Broker button</a>
-            <a id="authServiceBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Auth button</a>
 
-            <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
-                <span class="text-muted">Output shows here...</span>
+            <div class="container-b">
+                <div class="btn" id="btn-1">
+                    <a id="brokerServiceBtn" href="javascript:void(0);">Broker</a>
+                </div>
+
+                <div class="btn" id="btn-2">
+                    <a id="authServiceBtn" href="javascript:void(0);">Authentication</a>
+                </div>
+
+                <div class="btn" id="btn-3">
+                    <a id="LogBtn" href="javascript:void(0);">Logger</a>
+                </div>
+
+                <div class="btn" id="btn-4">
+                    <a id="mailBtn" href="javascript:void(0);">Send Mail</a>
+                </div>
+
+                <div class="btn" id="btn-5">
+                    <a id="grpc" href="javascript:void(0);">gRPC</a>
+                </div>
+            </div>
+            <div id="output" class="mt-4">
+                <span class="text-muted">Informatian are here:</span>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <h4 class="mt-5">Sent</h4>
-            <div class="mt-1" style="outline: 1px solid silver; padding: 2em;">
-                <pre id="payload"><span class="text-muted">Nothing sent yet...</span></pre>
+            <div class="mt-1">
+                <pre id="payload"><span class="text-muted">Waiting...</span></pre>
             </div>
         </div>
         <div class="col">
             <h4 class="mt-5">Received</h4>
-            <div class="mt-1" style="outline: 1px solid silver; padding: 2em;">
-                <pre id="received"><span class="text-muted">Nothing received yet...</span></pre>
+            <div class="mt-1">
+                <pre id="received"><span class="text-muted">Waiting for request</span></pre>
             </div>
         </div>
     </div>
@@ -31,9 +50,119 @@
 <script>
     let brokerServiceBtn = document.getElementById("brokerServiceBtn")
     let authServiceBtn = document.getElementById("authServiceBtn")
+    let LogBtn = document.getElementById("LogBtn")
     let output = document.getElementById("output")
+    let grpc = document.getElementById("grpc")
     let sent = document.getElementById("payload")
     let received = document.getElementById("received")
+    let mailBtn = document.getElementById("mailBtn")
+
+    mailBtn.addEventListener("click", function() {
+
+        const payload = {
+            action: "mail",
+            mail: {
+                from: "myself@world.xd",
+                to: "someone@hello.xd",
+                subject: "Subject",
+                message: "Some text",
+            }
+        }
+
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        const body = {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: headers,
+        }
+
+        fetch("http:\/\/localhost:8080/handle", body)
+            .then((response) => response.json())
+            .then((data) => {
+                sent.innerHTML = JSON.stringify(payload, undefined, 4);
+                received.innerHTML = JSON.stringify(data, undefined, 4);
+                if (data.error) {
+                    output.innerHTML += `<br><strong>Error:</strong> ${data.message}`;
+                } else {
+                    output.innerHTML += `<br><strong>Broker-service respond</strong>: ${data.message}`;
+                }
+            })
+            .catch((error) => {
+                output.innerHTML += "<br><br>Message that says what goes wrong: " + error;
+            })
+    })
+
+
+    LogBtn.addEventListener("click", function() {
+        const payload = {
+            action: "log",
+            log: {
+                name: "event",
+                data: "Here are information",
+            }
+        }
+
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        const body = {
+            method: "POST",
+            body: JSON.stringify(payload),
+            headers: headers
+        }
+
+        fetch("http:\/\/localhost:8080/handle", body)
+            .then((response) => response.json())
+            .then((data) => {
+                sent.innerHTML = JSON.stringify(payload, undefined, 4);
+                received.innerHTML = JSON.stringify(data, undefined, 4);
+                if (data.error) {
+                    output.innerHTML += `<br><strong>Error:</strong> ${data.message}`;
+                } else {
+                    output.innerHTML += `<br><strong>Broker-service respond</strong>: ${data.message}`;
+                }
+            })
+            .catch((error) => {
+                output.innerHTML += "<br><br>Message that says what goes wrong: " + error;
+            })
+    })
+
+    grpc.addEventListener("click", function() {
+        const payload = {
+            action: "log",
+            log: {
+                name: "event",
+                data: "Here are information from grpc",
+            }
+        }
+
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        const body = {
+            method: "POST",
+            body: JSON.stringify(payload),
+            headers: headers
+        }
+
+        fetch("http:\/\/localhost:8080/logger-grpc", body)
+            .then((response) => response.json())
+            .then((data) => {
+                sent.innerHTML = JSON.stringify(payload, undefined, 4);
+                received.innerHTML = JSON.stringify(data, undefined, 4);
+                if (data.error) {
+                    output.innerHTML += `<br><strong>Error:</strong> ${data.message}`;
+                } else {
+                    output.innerHTML += `<br><strong>Broker-service respond</strong>: ${data.message}`;
+                }
+            })
+            .catch((error) => {
+                output.innerHTML += "<br><br>Message that says what goes wrong: " + error;
+            })
+    })
+
 
     authServiceBtn.addEventListener("click", function() {
 

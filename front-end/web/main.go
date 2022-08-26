@@ -1,9 +1,11 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"text/template"
 )
 
@@ -12,33 +14,42 @@ func main() {
 		render(w, "main.page.html")
 	})
 
-	fmt.Println("Web started on 80 port!")
-	err := http.ListenAndServe(":80", nil)
+	fmt.Println("Web started on 8081 port!")
+	err := http.ListenAndServe(":8081", nil)
 	if err != nil {
 		log.Panic(err)
 	}
 }
 
+//go:embed template
+var templateFS embed.FS
+
 func render(w http.ResponseWriter, s string) {
 	partials := []string{
-		"./web/template/base.layout.html",
-		"./web/template/header.html",
+		"template/base.layout.html",
+		"template/header.html",
 	}
 
 	var templateSlice []string
-	templateSlice = append(templateSlice, fmt.Sprintf("./web/template/%s", s))
+	templateSlice = append(templateSlice, fmt.Sprintf("template/%s", s))
 
 	for _, x := range partials {
 		templateSlice = append(templateSlice, x)
 	}
 
-	tmpl, err := template.ParseFiles(templateSlice...)
+	tmpl, err := template.ParseFS(templateFS, templateSlice...)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	if err := tmpl.Execute(w, nil); err != nil {
+	var data struct {
+		BrokerURL string
+	}
+
+	data.BrokerURL = os.Getenv("BROKER_URL")
+
+	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

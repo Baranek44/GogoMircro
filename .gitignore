@@ -4,3 +4,5 @@ brokerApp
 authApp
 go.sum
 loggerServiceApp
+FrontApp.exe~
+mailServiceApp
