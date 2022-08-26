@@ -1,0 +1,29 @@
+\*\*\*\* Before use commends go to file you want to push in docker \*\*\*\*
+
+docker build -f nameImage.dockerfile -t nameUser/nameImageInDocker:Version(1.0.0) .
+docker push nameUser/nameimage:Version(1.0.0)
+docker login:
+Username
+Password
+
+docker push nameUser/nameimage:Version(1.0.0)
+
+docker stack deploy -c swarm.yml nameApp
+
+docker service ls - list goApp image
+
+docker service scale goApp_nameImage=value - change number of instance
+
+\*\*\*\* TO UPDATE \*\*\*\*
+docker build -f nameImage.dockerfile -t nameUser/nameImageInDocker:UpdateVersion .
+docker push nameUser/nameimage:UpdateVersion
+docker service scale goApp_nameImage=value
+docker service update --image baranek69/nameImage:UpdateValue goApp_nameImage
+
+\*\*\*\* TO DOWNGRADE \*\*\*\*
+docker service update --image baranek69/nameImage:laterVersion goApp_nameImage
+
+\*\*\*\* STOP DOCKER SWARM \*\*\*\*
+docker stack rm nameApp - remove swarm
+
+docker swarm leave --force - leaving
