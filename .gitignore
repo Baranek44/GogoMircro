@@ -6,3 +6,7 @@ go.sum
 loggerServiceApp
 FrontApp.exe~
 mailServiceApp
+listenerApp
+frontApp
+mailerApp
+mailServiceApp
