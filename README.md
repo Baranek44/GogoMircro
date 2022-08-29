@@ -19,9 +19,14 @@ Applcation with basic work with microservices like log, mail, authentication
 * Docker: 4.6.1
 
 ## Setup
-necessary app: Docker, np. Visual Studio Code, mongoDBCompas
-TODO
+This project 
 
 
 ## Status
-Working on issue
+To run this project, install it locally using:
+
+```
+$ make up_build
+$ make start
+```
+Then open browser on localhost/ 
